@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { CarbonProvider } from './context/CarbonContext';
 import { Layout } from './components/Layout';
 import './App.css';
@@ -11,7 +11,7 @@ const ProgressPage = lazy(() => import('./pages/ProgressPage').then(m => ({ defa
 
 export function App(): React.ReactNode {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <CarbonProvider>
         <Suspense fallback={<div className="loading" role="status">Loading…</div>}>
           <Routes>
@@ -25,6 +25,6 @@ export function App(): React.ReactNode {
           </Routes>
         </Suspense>
       </CarbonProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
