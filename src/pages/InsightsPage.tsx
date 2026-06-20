@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import type { ActivityCategory, ReductionTip } from '../types';
 import { useCarbonContext } from '../context/useCarbonContext';
 import { REDUCTION_TIPS } from '../constants/tips';
+import { SORT_LAST } from '../constants/limits';
 import { CATEGORY_LABELS } from '../constants/emissions';
 import { TipCard } from '../components/TipCard';
 import { GoalSetter } from '../components/GoalSetter';
@@ -25,7 +26,7 @@ export function InsightsPage() {
     const ranked = [...REDUCTION_TIPS].sort((a, b) => {
       const aIdx = rankedCategories.indexOf(a.category);
       const bIdx = rankedCategories.indexOf(b.category);
-      return (aIdx === -1 ? 99 : aIdx) - (bIdx === -1 ? 99 : bIdx);
+      return (aIdx === -1 ? SORT_LAST : aIdx) - (bIdx === -1 ? SORT_LAST : bIdx);
     });
     return ranked.filter((tip) => {
       if (filterCategory !== 'all' && tip.category !== filterCategory) return false;

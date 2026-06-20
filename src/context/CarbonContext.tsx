@@ -20,9 +20,9 @@ export function CarbonProvider({ children }: { children: ReactNode }): ReactNode
   useEffect(() => { saveGoal(goal); }, [goal]);
 
   const addEntry = useCallback(
-    (category: ActivityCategory, activity: string, value: number, _unit: string): void => {
+    (category: ActivityCategory, activity: string, value: number, unit: string): void => {
       setEntries((prev) => [{
-        id: generateId(), category, activity, value, unit: _unit,
+        id: generateId(), category, activity, value, unit,
         co2Kg: calculateCO2(activity, value),
         date: new Date().toISOString().split('T')[0],
       }, ...prev]);

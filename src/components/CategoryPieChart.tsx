@@ -2,6 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend, type PieLabelRenderProps } from 'recharts';
 import { useCarbonContext } from '../context/useCarbonContext';
 import { CATEGORY_COLORS, CATEGORY_LABELS } from '../constants/emissions';
+import { CHART_HEIGHT, PERCENTAGE } from '../constants/limits';
 import type { ActivityCategory } from '../types';
 
 function CategoryPieChartInner() {
@@ -9,7 +10,7 @@ function CategoryPieChartInner() {
 
   const data = categoryBreakdown.map((item) => ({
     name: CATEGORY_LABELS[item.category],
-    value: Math.round(item.total * 100) / 100,
+    value: Math.round(item.total * PERCENTAGE) / PERCENTAGE,
     percentage: item.percentage,
     category: item.category,
   }));
@@ -24,7 +25,7 @@ function CategoryPieChartInner() {
       {data.length === 0 ? (
         <p className="empty-msg">No data to display</p>
       ) : (
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
           <PieChart>
             <Pie
               data={data}
@@ -34,7 +35,7 @@ function CategoryPieChartInner() {
               cy="50%"
               outerRadius={100}
               label={(props: PieLabelRenderProps) =>
-                `${String(props.name ?? '')} ${(Number(props.percent ?? 0) * 100).toFixed(0)}%`
+                `${String(props.name ?? '')} ${(Number(props.percent ?? 0) * PERCENTAGE).toFixed(0)}%`
               }
             >
               {data.map((entry) => (

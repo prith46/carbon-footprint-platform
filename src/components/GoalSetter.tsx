@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { MAX_GOAL_LIMIT_KG } from '../constants/limits';
+import { MAX_GOAL_LIMIT_KG, CONFIRMATION_TIMEOUT_MS } from '../constants/limits';
 import { useCarbonContext } from '../context/useCarbonContext';
 import { useAnnouncer } from '../context/useAnnouncer';
 
@@ -22,7 +22,7 @@ export function GoalSetter() {
         });
         setSaved(true);
         announce('Goals updated successfully');
-        setTimeout(() => setSaved(false), 3000);
+        setTimeout(() => setSaved(false), CONFIRMATION_TIMEOUT_MS);
       }
     },
     [daily, weekly, updateGoal, announce],

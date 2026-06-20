@@ -7,7 +7,7 @@ export interface ActivityEntry {
   value: number;
   unit: string;
   co2Kg: number;
-  date: string; // ISO date string
+  date: string;
 }
 
 export interface DailyTotal {

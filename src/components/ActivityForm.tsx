@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { ActivityCategory } from '../types';
 import { ACTIVITY_OPTIONS, CATEGORY_LABELS } from '../constants/emissions';
-import { MAX_ACTIVITY_VALUE } from '../constants/limits';
+import { MAX_ACTIVITY_VALUE, CONFIRMATION_TIMEOUT_MS } from '../constants/limits';
 import { useCarbonContext } from '../context/useCarbonContext';
 import { useAnnouncer } from '../context/useAnnouncer';
 
@@ -45,7 +45,7 @@ export function ActivityForm() {
       announce(message);
       setValue('');
       setActivity('');
-      setTimeout(() => setConfirmation(''), 3000);
+      setTimeout(() => setConfirmation(''), CONFIRMATION_TIMEOUT_MS);
     },
     [activity, value, selectedOption, category, addEntry, announce],
   );

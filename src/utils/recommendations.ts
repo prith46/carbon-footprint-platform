@@ -9,12 +9,13 @@ import type {
 } from '../types';
 import { CATEGORY_LABELS } from '../constants/emissions';
 import { REDUCTION_TIPS } from '../constants/tips';
+import { PERCENTAGE } from '../constants/limits';
 
 const DOMINANT_CATEGORY_THRESHOLD = 40;
 const PRIORITY_RANK: Record<RecommendationPriority, number> = { high: 0, medium: 1, low: 2 };
 const MAX_RECOMMENDATIONS = 4;
 
-export interface RecommendationInput {
+interface RecommendationInput {
   entries: ActivityEntry[];
   breakdown: CategoryBreakdown[];
   trend: Trend;
@@ -31,7 +32,7 @@ function topTipFor(category: CategoryBreakdown['category']): ReductionTip | unde
 function goalRec(weeklyAverage: number, goal: UserGoal): Recommendation | null {
   if (goal.dailyLimitKg <= 0 || weeklyAverage <= goal.dailyLimitKg) return null;
   const over = weeklyAverage - goal.dailyLimitKg;
-  const pct = Math.round((over / goal.dailyLimitKg) * 100);
+  const pct = Math.round((over / goal.dailyLimitKg) * PERCENTAGE);
   return {
     id: 'rec-goal',
     priority: 'high',

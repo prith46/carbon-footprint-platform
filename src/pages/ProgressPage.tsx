@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useCarbonContext } from '../context/useCarbonContext';
 import { EmissionChart } from '../components/EmissionChart';
+import { PERCENTAGE, TREND_DAYS, RECENT_DAYS } from '../constants/limits';
 
 const TREND_MESSAGES = {
   improving: 'Great work! Your emissions are trending downward. Keep it up!',
@@ -12,14 +13,14 @@ export function ProgressPage() {
   const { trend, goal, weeklyAverage, monthlyTotal } = useCarbonContext();
 
   const dailyPercent = useMemo(
-    () => goal.dailyLimitKg > 0 ? Math.min((weeklyAverage / goal.dailyLimitKg) * 100, 100) : 0,
+    () => goal.dailyLimitKg > 0 ? Math.min((weeklyAverage / goal.dailyLimitKg) * PERCENTAGE, PERCENTAGE) : 0,
     [weeklyAverage, goal.dailyLimitKg],
   );
 
-  const weeklyTotal = useMemo(() => weeklyAverage * 7, [weeklyAverage]);
+  const weeklyTotal = useMemo(() => weeklyAverage * TREND_DAYS, [weeklyAverage]);
 
   const weeklyPercent = useMemo(
-    () => goal.weeklyLimitKg > 0 ? Math.min((weeklyTotal / goal.weeklyLimitKg) * 100, 100) : 0,
+    () => goal.weeklyLimitKg > 0 ? Math.min((weeklyTotal / goal.weeklyLimitKg) * PERCENTAGE, PERCENTAGE) : 0,
     [weeklyTotal, goal.weeklyLimitKg],
   );
 
@@ -31,7 +32,7 @@ export function ProgressPage() {
         <p>{TREND_MESSAGES[trend]}</p>
       </div>
       <section className="chart-section">
-        <h2>Last 30 Days</h2>
+        <h2>Last {RECENT_DAYS} Days</h2>
         <EmissionChart />
       </section>
       <section className="goal-progress card">
@@ -82,7 +83,7 @@ function ProgressBar({ label, current, limit, percent, unit }: ProgressBarProps)
           {current.toFixed(1)} / {limit.toFixed(1)} {unit}
         </span>
       </div>
-      <div className="progress-bar-track" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+      <div className="progress-bar-track" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={PERCENTAGE}>
         <div
           className={`progress-bar-fill ${isOver ? 'over-limit' : ''}`}
           style={{ width: `${percent}%` }}

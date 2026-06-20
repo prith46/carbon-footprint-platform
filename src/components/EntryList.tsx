@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import type { ActivityCategory } from '../types';
 import { CATEGORY_LABELS } from '../constants/emissions';
 import { ALL_TIME_DAYS, ENTRY_RANGE_OPTIONS, isCategoryFilter, isRangeDays } from '../constants/filters';
+import { STORAGE_KEY_FILTER_CATEGORY, STORAGE_KEY_FILTER_RANGE } from '../constants/limits';
 import { useCarbonContext } from '../context/useCarbonContext';
 import { useFilteredEntries } from '../hooks/useFilteredEntries';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -10,8 +11,8 @@ const ALL_CATEGORIES: ActivityCategory[] = ['transport', 'food', 'energy', 'shop
 
 export function EntryList() {
   const { entries, deleteEntry } = useCarbonContext();
-  const [category, setCategory] = useLocalStorage<ActivityCategory | 'all'>('carbon-filter-category', 'all');
-  const [rangeDays, setRangeDays] = useLocalStorage<number>('carbon-filter-range', ALL_TIME_DAYS);
+  const [category, setCategory] = useLocalStorage<ActivityCategory | 'all'>(STORAGE_KEY_FILTER_CATEGORY, 'all');
+  const [rangeDays, setRangeDays] = useLocalStorage<number>(STORAGE_KEY_FILTER_RANGE, ALL_TIME_DAYS);
 
   const safeCategory = isCategoryFilter(category) ? category : 'all';
   const safeRange = isRangeDays(rangeDays) ? rangeDays : ALL_TIME_DAYS;

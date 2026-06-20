@@ -1,7 +1,5 @@
 import type { ActivityEntry, UserGoal, ActivityCategory } from '../types';
-
-const ENTRIES_KEY = 'carbon-entries';
-const GOAL_KEY = 'carbon-goal';
+import { STORAGE_KEY_ENTRIES, STORAGE_KEY_GOAL } from '../constants/limits';
 const VALID_CATEGORIES: ActivityCategory[] = ['transport', 'food', 'energy', 'shopping'];
 const DEFAULT_GOAL: UserGoal = { dailyLimitKg: 10, weeklyLimitKg: 70 };
 
@@ -36,7 +34,7 @@ function isValidEntry(item: unknown): item is ActivityEntry {
 
 export function loadEntries(): ActivityEntry[] {
   try {
-    const raw = localStorage.getItem(ENTRIES_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY_ENTRIES);
     if (!raw) {
       return [];
     }
@@ -51,12 +49,12 @@ export function loadEntries(): ActivityEntry[] {
 }
 
 export function saveEntries(entries: ActivityEntry[]): void {
-  localStorage.setItem(ENTRIES_KEY, JSON.stringify(entries));
+  localStorage.setItem(STORAGE_KEY_ENTRIES, JSON.stringify(entries));
 }
 
 export function loadGoal(): UserGoal {
   try {
-    const raw = localStorage.getItem(GOAL_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY_GOAL);
     if (!raw) {
       return { ...DEFAULT_GOAL };
     }
@@ -78,5 +76,5 @@ export function loadGoal(): UserGoal {
 }
 
 export function saveGoal(goal: UserGoal): void {
-  localStorage.setItem(GOAL_KEY, JSON.stringify(goal));
+  localStorage.setItem(STORAGE_KEY_GOAL, JSON.stringify(goal));
 }

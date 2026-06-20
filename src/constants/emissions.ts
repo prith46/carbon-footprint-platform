@@ -22,7 +22,7 @@ export const EMISSION_FACTORS: Record<string, number> = {
   'groceries': 3.0,
 };
 
-export interface ActivityOption {
+interface ActivityOption {
   category: ActivityCategory;
   activity: string;
   unit: string;

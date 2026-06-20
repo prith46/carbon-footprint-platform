@@ -18,9 +18,7 @@ export function useLocalStorage<T>(key: string, defaultValue: T): [T, (value: T)
       setStoredValue(value);
       try {
         localStorage.setItem(key, JSON.stringify(value));
-      } catch {
-        // Storage full or unavailable
-      }
+      } catch { /* ignored */ }
     },
     [key],
   );
