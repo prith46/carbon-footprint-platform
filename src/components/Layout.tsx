@@ -3,7 +3,6 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 export function Layout() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [announcement, setAnnouncement] = useState('');
 
   const toggleMenu = useCallback(() => {
     setMenuOpen((prev) => !prev);
@@ -41,14 +40,11 @@ export function Layout() {
         </div>
       </header>
       <main id="main-content">
-        <Outlet context={{ setAnnouncement }} />
+        <Outlet />
       </main>
       <footer className="app-footer">
         <p>CarbonTrack &mdash; Track your carbon footprint</p>
       </footer>
-      <div aria-live="polite" className="sr-live-region">
-        {announcement}
-      </div>
     </>
   );
 }

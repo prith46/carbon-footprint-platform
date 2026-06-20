@@ -34,3 +34,15 @@ export interface UserGoal {
   dailyLimitKg: number;
   weeklyLimitKg: number;
 }
+
+export type RecommendationPriority = 'high' | 'medium' | 'low';
+
+export interface Recommendation {
+  id: string;
+  priority: RecommendationPriority;
+  icon: string;
+  title: string;
+  message: string;
+}
+
+export type Trend = 'improving' | 'stable' | 'increasing';

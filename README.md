@@ -16,6 +16,17 @@ A web application that helps individuals **understand**, **track**, and **reduce
 
 3. **Reduce** — The Insights page provides 12+ actionable tips personalized by the user's highest emission category. Users set daily and weekly goals, and the Progress page shows how they're tracking against those targets.
 
+### Smart Recommendation Engine (the dynamic assistant)
+
+The Dashboard features a context-aware recommendation engine (`src/utils/recommendations.ts`) that performs logical decision-making based on the user's actual data:
+
+- **Goal overage** — if the recent daily average exceeds the user's goal, it computes the exact overage and surfaces a high-priority alert with the kg/day reduction needed.
+- **Trend detection** — if emissions are rising week-over-week, it warns and names the category driving the increase.
+- **Dominant category** — if one category exceeds 40% of the footprint, it recommends the single highest-saving action for that category, with quantified CO2 savings.
+- **Positive reinforcement** — if the user is improving or within goal, it acknowledges progress and nudges toward a more ambitious target.
+
+Recommendations are prioritized (high → low) and capped, so the advice is always the most relevant to the user's current context.
+
 ### Emission Calculation
 
 Every activity maps to a scientifically-backed emission factor (kg CO2 per unit):

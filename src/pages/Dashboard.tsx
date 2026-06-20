@@ -2,6 +2,7 @@ import { useCarbonContext } from '../context/useCarbonContext';
 import { StatCard } from '../components/StatCard';
 import { EmissionChart } from '../components/EmissionChart';
 import { CategoryPieChart } from '../components/CategoryPieChart';
+import { SmartRecommendations } from '../components/SmartRecommendations';
 
 const TREND_LABELS = {
   improving: 'Improving',
@@ -35,6 +36,7 @@ export function Dashboard() {
           value={`${TREND_ICONS[trend]} ${TREND_LABELS[trend]}`}
         />
       </div>
+      <SmartRecommendations />
       <section className="chart-section">
         <EmissionChart />
       </section>

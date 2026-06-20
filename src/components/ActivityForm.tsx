@@ -1,12 +1,15 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { ActivityCategory } from '../types';
 import { ACTIVITY_OPTIONS, CATEGORY_LABELS } from '../constants/emissions';
+import { MAX_ACTIVITY_VALUE } from '../constants/limits';
 import { useCarbonContext } from '../context/useCarbonContext';
+import { useAnnouncer } from '../context/useAnnouncer';
 
 const CATEGORIES: ActivityCategory[] = ['transport', 'food', 'energy', 'shopping'];
 
 export function ActivityForm() {
   const { addEntry } = useCarbonContext();
+  const announce = useAnnouncer();
   const [category, setCategory] = useState<ActivityCategory>('transport');
   const [activity, setActivity] = useState('');
   const [value, setValue] = useState('');
@@ -33,15 +36,18 @@ export function ActivityForm() {
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      const numVal = parseFloat(value);
-      if (!activity || !numVal || numVal <= 0 || !selectedOption) return;
+      const parsed = parseFloat(value);
+      if (!activity || !Number.isFinite(parsed) || parsed <= 0 || !selectedOption) return;
+      const numVal = Math.min(parsed, MAX_ACTIVITY_VALUE);
       addEntry(category, activity, numVal, selectedOption.unit);
-      setConfirmation(`Added ${numVal} ${selectedOption.unit} of ${activity}`);
+      const message = `Added ${numVal} ${selectedOption.unit} of ${activity}`;
+      setConfirmation(message);
+      announce(message);
       setValue('');
       setActivity('');
       setTimeout(() => setConfirmation(''), 3000);
     },
-    [activity, value, selectedOption, category, addEntry],
+    [activity, value, selectedOption, category, addEntry, announce],
   );
 
   return (
@@ -72,13 +78,14 @@ export function ActivityForm() {
           id="af-value"
           type="number"
           min="0"
+          max={MAX_ACTIVITY_VALUE}
           step="0.1"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
       </div>
       <button type="submit" className="btn btn-primary">Add Entry</button>
-      <div aria-live="polite" className="confirmation-msg">{confirmation}</div>
+      <p className="confirmation-msg">{confirmation}</p>
     </form>
   );
 }

@@ -3,6 +3,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { CarbonProvider } from '../context/CarbonContext';
+import { AnnouncerProvider } from '../context/AnnouncerProvider';
 import { StatCard } from '../components/StatCard';
 import { TipCard } from '../components/TipCard';
 import { ActivityForm } from '../components/ActivityForm';
@@ -28,7 +29,9 @@ vi.mock('recharts', () => ({
 function AllProviders({ children }: { children: ReactNode }) {
   return (
     <MemoryRouter>
-      <CarbonProvider>{children}</CarbonProvider>
+      <CarbonProvider>
+        <AnnouncerProvider>{children}</AnnouncerProvider>
+      </CarbonProvider>
     </MemoryRouter>
   );
 }
@@ -128,7 +131,7 @@ describe('ActivityForm', () => {
     fireEvent.change(screen.getByLabelText('Activity'), { target: { value: 'car' } });
     fireEvent.change(screen.getByLabelText(/Amount/), { target: { value: '50' } });
     fireEvent.click(screen.getByText('Add Entry'));
-    expect(screen.getByText(/Added 50 km of car/)).toBeDefined();
+    expect(screen.getAllByText(/Added 50 km of car/).length).toBeGreaterThan(0);
   });
 });
 
@@ -191,7 +194,7 @@ describe('GoalSetter', () => {
     fireEvent.change(screen.getByLabelText('Daily CO2 limit (kg)'), { target: { value: '8' } });
     fireEvent.change(screen.getByLabelText('Weekly CO2 limit (kg)'), { target: { value: '56' } });
     fireEvent.click(screen.getByText('Save Goals'));
-    expect(screen.getByText('Goals updated successfully')).toBeDefined();
+    expect(screen.getAllByText('Goals updated successfully').length).toBeGreaterThan(0);
   });
 });
 

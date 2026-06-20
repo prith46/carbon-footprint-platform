@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { CarbonProvider } from '../context/CarbonContext';
+import { AnnouncerProvider } from '../context/AnnouncerProvider';
 import { Dashboard } from '../pages/Dashboard';
 import { TrackPage } from '../pages/TrackPage';
 import { InsightsPage } from '../pages/InsightsPage';
@@ -25,7 +26,9 @@ vi.mock('recharts', () => ({
 function AllProviders({ children }: { children: ReactNode }) {
   return (
     <MemoryRouter>
-      <CarbonProvider>{children}</CarbonProvider>
+      <CarbonProvider>
+        <AnnouncerProvider>{children}</AnnouncerProvider>
+      </CarbonProvider>
     </MemoryRouter>
   );
 }

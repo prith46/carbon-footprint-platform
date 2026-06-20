@@ -1,8 +1,11 @@
 import { useState, useCallback } from 'react';
+import { MAX_GOAL_LIMIT_KG } from '../constants/limits';
 import { useCarbonContext } from '../context/useCarbonContext';
+import { useAnnouncer } from '../context/useAnnouncer';
 
 export function GoalSetter() {
   const { goal, updateGoal } = useCarbonContext();
+  const announce = useAnnouncer();
   const [daily, setDaily] = useState(String(goal.dailyLimitKg));
   const [weekly, setWeekly] = useState(String(goal.weeklyLimitKg));
   const [saved, setSaved] = useState(false);
@@ -12,13 +15,17 @@ export function GoalSetter() {
       e.preventDefault();
       const d = parseFloat(daily);
       const w = parseFloat(weekly);
-      if (d > 0 && w > 0) {
-        updateGoal({ dailyLimitKg: d, weeklyLimitKg: w });
+      if (Number.isFinite(d) && d > 0 && Number.isFinite(w) && w > 0) {
+        updateGoal({
+          dailyLimitKg: Math.min(d, MAX_GOAL_LIMIT_KG),
+          weeklyLimitKg: Math.min(w, MAX_GOAL_LIMIT_KG),
+        });
         setSaved(true);
+        announce('Goals updated successfully');
         setTimeout(() => setSaved(false), 3000);
       }
     },
-    [daily, weekly, updateGoal],
+    [daily, weekly, updateGoal, announce],
   );
 
   return (
@@ -33,6 +40,7 @@ export function GoalSetter() {
           id="gs-daily"
           type="number"
           min="0"
+          max={MAX_GOAL_LIMIT_KG}
           step="0.1"
           value={daily}
           onChange={(e) => setDaily(e.target.value)}
@@ -44,15 +52,16 @@ export function GoalSetter() {
           id="gs-weekly"
           type="number"
           min="0"
+          max={MAX_GOAL_LIMIT_KG}
           step="0.5"
           value={weekly}
           onChange={(e) => setWeekly(e.target.value)}
         />
       </div>
       <button type="submit" className="btn btn-primary">Save Goals</button>
-      <div aria-live="polite" className="confirmation-msg">
+      <p className="confirmation-msg">
         {saved ? 'Goals updated successfully' : ''}
-      </div>
+      </p>
     </form>
   );
 }

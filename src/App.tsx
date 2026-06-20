@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { CarbonProvider } from './context/CarbonContext';
+import { AnnouncerProvider } from './context/AnnouncerProvider';
 import { Layout } from './components/Layout';
 import './App.css';
 
@@ -13,17 +14,19 @@ export function App(): React.ReactNode {
   return (
     <HashRouter>
       <CarbonProvider>
-        <Suspense fallback={<div className="loading" role="status">Loading…</div>}>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/track" element={<TrackPage />} />
-              <Route path="/insights" element={<InsightsPage />} />
-              <Route path="/progress" element={<ProgressPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </Suspense>
+        <AnnouncerProvider>
+          <Suspense fallback={<div className="loading" role="status">Loading…</div>}>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/track" element={<TrackPage />} />
+                <Route path="/insights" element={<InsightsPage />} />
+                <Route path="/progress" element={<ProgressPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Route>
+            </Routes>
+          </Suspense>
+        </AnnouncerProvider>
       </CarbonProvider>
     </HashRouter>
   );

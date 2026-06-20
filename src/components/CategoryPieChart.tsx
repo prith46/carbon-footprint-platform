@@ -34,7 +34,7 @@ function CategoryPieChartInner() {
               cy="50%"
               outerRadius={100}
               label={(props: PieLabelRenderProps) =>
-                `${String(props.name ?? '')} ${Number(props.percent ?? 0).toFixed(0)}%`
+                `${String(props.name ?? '')} ${(Number(props.percent ?? 0) * 100).toFixed(0)}%`
               }
             >
               {data.map((entry) => (

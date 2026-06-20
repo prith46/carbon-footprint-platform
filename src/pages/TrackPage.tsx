@@ -9,10 +9,7 @@ export function TrackPage() {
         Log your daily activities to measure your carbon footprint.
       </p>
       <ActivityForm />
-      <section className="entries-section">
-        <h2>Recent Entries</h2>
-        <EntryList />
-      </section>
+      <EntryList />
     </div>
   );
 }
